@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDF 업무 어시스턴트</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>📄 PDF 업무 어시스턴트</h1>
+  </header>
+
+  <main>
+    <!-- 좌측: PDF 뷰어 -->
+    <section class="pdf-panel">
+      <div id="pdf-info" class="pdf-info">PDF 문서를 불러오는 중...</div>
+      <iframe id="pdf-viewer" title="PDF 뷰어"></iframe>
+    </section>
+
+    <!-- 우측: 채팅 패널 -->
+    <section class="chat-panel">
+      <div id="messages" class="messages">
+        <div class="message assistant">
+          안녕하세요! 좌측 PDF 문서 내용에 대해 질문해주세요.
+        </div>
+      </div>
+
+      <form id="chat-form" class="input-area">
+        <textarea
+          id="input"
+          placeholder="PDF 내용에 대해 질문하세요... (Enter: 전송 / Shift+Enter: 줄바꿈)"
+          rows="2"
+          autofocus
+        ></textarea>
+        <button type="submit" id="send-btn">전송</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
