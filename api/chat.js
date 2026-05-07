@@ -6,7 +6,10 @@ const pdfParse = require('pdf-parse/lib/pdf-parse.js'); // Vercel 환경 안전 
 const fs = require('fs');
 const path = require('path');
 
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const client = new OpenAI({
+  apiKey: process.env.SAMBANOVA_API_KEY,
+  baseURL: 'https://api.sambanova.ai/v1',
+});
 
 // PDF 파일 위치: 프로젝트 루트의 docs/ 폴더
 const DOCS_DIR = path.join(__dirname, '..', 'docs');
@@ -99,9 +102,9 @@ module.exports = async function handler(req, res) {
 ${pdfText.slice(0, 60000)}`
       : '당신은 업무 어시스턴트입니다. 반드시 한국어로 답변하세요. 현재 로드된 문서가 없습니다.';
 
-    // OpenAI: system 메시지를 messages 배열 첫 번째 항목으로 포함
+    // SambaNova: system 메시지를 messages 배열 첫 번째 항목으로 포함
     const response = await client.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: process.env.HF_MODEL || 'Meta-Llama-3.3-70B-Instruct',
       messages: [
         { role: 'system', content: systemContent },
         ...history,
@@ -111,7 +114,7 @@ ${pdfText.slice(0, 60000)}`
 
     return res.status(200).json({ reply: response.choices[0].message.content });
   } catch (err) {
-    console.error('[OpenAI API 오류]', err.message);
+    console.error('[SambaNova API 오류]', err.message);
     return res.status(500).json({
       error: 'AI 서비스에 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
     });
